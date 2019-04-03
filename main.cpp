@@ -1,63 +1,54 @@
-// http://poj.org/problem?id=1573
+// https://blog.csdn.net/freezhanacmore/article/details/9614587
+// 棋子可能是任意多个
 #include <iostream>
 
 using namespace std;
 
-const int MAX = 15;
-char map[MAX][MAX];
-int visited[MAX][MAX];
+const int ROW = 17;
+const int COL = 33;
+
+char chess[ROW + 1][COL + 1];
+
+string wStrs[100];
+
+string bStrs[100];
+
+void store(int i, int j) {
+    char c = chess[2 * i][4 * j - 1];
+    if (c == ':' || c == '.') {
+        return;
+    }
+    if (isupper(c)) {
+        if (c != 'P') {
+            wStrs[c] += c;
+        }
+        wStrs[c] += (char) (j + 96) + to_string(9 - i) + ",";
+    } else {
+        if (c != 'p') {
+            bStrs[c] += c;
+        }
+        bStrs[c - 32] += (char) (c - 32);
+        bStrs[c - 32] += (char) (j + 96) + to_string(9 - i) + ",";
+    }
+}
 
 int main() {
-    int m, n, x, y;
-    while (cin >> m >> n >> y) {
-        if (m == 0 && n == 0 && y == 0) {
-            return 0;
-        }
-        x = 0;
-        y--;
-        memset(visited, -1, sizeof(visited));
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                cin >> map[i][j];
-            }
-        }
-        int step = 0;
-        bool exit = false;
-        while (visited[x][y] == -1 && !exit) {
-            visited[x][y] = step++;
-            switch (map[x][y]) {
-                case 'W':
-                    y -= 1;
-                    if (y < 0) {
-                        exit = true;
-                    }
-                    break;
-                case 'N' :
-                    x -= 1;
-                    if (x < 0) {
-                        exit = true;
-                    }
-                    break;
-                case 'S':
-                    x += 1;
-                    if (x == m) {
-                        exit = true;
-                    }
-                    break;
-                case 'E':
-                    y += 1;
-                    if (y == n) {
-                        exit = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        if (exit) {
-            printf("%d step(s) to exit\n", step);
-        } else {
-            printf("%d step(s) before a loop of %d step(s)\n", visited[x][y], step - visited[x][y]);
+    // input
+    for (int i = 1; i <= ROW; ++i) {
+        for (int j = 1; j <= COL; ++j) {
+            cin >> chess[i][j];
         }
     }
+    // deal
+    for (int i = 1; i <= 8; ++i) {
+        for (int j = 1; j <= 8; ++j) {
+            store(i, j);
+        }
+    }
+    cout << "White: ";
+    cout << wStrs['K'] << wStrs['Q'] << wStrs['R'] << wStrs['B'] << wStrs['N'] << wStrs['P'];
+    cout << endl;
+    cout << "Black: ";
+    cout << bStrs['K'] << bStrs['Q'] << bStrs['R'] << bStrs['B'] << bStrs['N'] << bStrs['P'];
+    cout << endl;
 }

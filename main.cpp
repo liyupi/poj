@@ -18,6 +18,7 @@ void store(int i, int j) {
     if (c == ':' || c == '.') {
         return;
     }
+    // todo 白色反序
     if (isupper(c)) {
         if (c != 'P') {
             wStrs[c] += c;

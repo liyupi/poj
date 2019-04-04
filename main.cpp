@@ -1,6 +1,8 @@
-// https://blog.csdn.net/freezhanacmore/article/details/9614587
-// 棋子可能是任意多个
+// http://poj.org/problem?id=2996
+// 2993的cp题，字符串拼接
 #include <iostream>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -9,27 +11,29 @@ const int COL = 33;
 
 char chess[ROW + 1][COL + 1];
 
-string wStrs[100];
+stringstream wStrs[100];
 
-string bStrs[100];
+stringstream bStrs[100];
 
-void store(int i, int j) {
+void store(int i, int j, bool upper) {
     char c = chess[2 * i][4 * j - 1];
     if (c == ':' || c == '.') {
         return;
     }
-    // todo 白色反序
-    if (isupper(c)) {
-        if (c != 'P') {
-            wStrs[c] += c;
+    if (upper) {
+        if (isupper(c)) {
+            if (c != 'P') {
+                wStrs[c] << c;
+            }
+            wStrs[c] << (char) (j + 96) << (9 - i) << ",";
         }
-        wStrs[c] += (char) (j + 96) + to_string(9 - i) + ",";
     } else {
-        if (c != 'p') {
-            bStrs[c] += c;
+        if (!isupper(c)) {
+            if (c != 'p') {
+                bStrs[c - 32] << (char) (c - 32);
+            }
+            bStrs[c - 32] << (char) (j + 96) << (9 - i) << ",";
         }
-        bStrs[c - 32] += (char) (c - 32);
-        bStrs[c - 32] += (char) (j + 96) + to_string(9 - i) + ",";
     }
 }
 
@@ -41,15 +45,21 @@ int main() {
         }
     }
     // deal
+    // 白色反序
+    for (int i = 8; i >= 1; i--) {
+        for (int j = 1; j <= 8; ++j) {
+            store(i, j, true);
+        }
+    }
     for (int i = 1; i <= 8; ++i) {
         for (int j = 1; j <= 8; ++j) {
-            store(i, j);
+            store(i, j, false);
         }
     }
     cout << "White: ";
-    cout << wStrs['K'] << wStrs['Q'] << wStrs['R'] << wStrs['B'] << wStrs['N'] << wStrs['P'];
+    cout << wStrs['K'].str() << wStrs['Q'].str() << wStrs['R'].str() << wStrs['B'].str() << wStrs['N'].str() << wStrs['P'].str().substr(0, wStrs['P'].str().length() - 1);
     cout << endl;
     cout << "Black: ";
-    cout << bStrs['K'] << bStrs['Q'] << bStrs['R'] << bStrs['B'] << bStrs['N'] << bStrs['P'];
+    cout << bStrs['K'].str() << bStrs['Q'].str() << bStrs['R'].str() << bStrs['B'].str() << bStrs['N'].str() << bStrs['P'].str().substr(0, wStrs['P'].str().length() - 1);
     cout << endl;
 }

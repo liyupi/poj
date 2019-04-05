@@ -22,6 +22,7 @@ int main() {
             cin >> str[i];
         }
         int maxLen = 0;
+        // 只能依次遍历所有长度的字串
         for (int i = 3; i <= 60; ++i) {
             int max = 60 - i;
             for (int j = 0; j <= max; ++j) {

@@ -1,4 +1,4 @@
-// http://poj.org/problem?id=1416
+// http://poj.org/problem?id=3020
 // 最大独立点集 = 总顶点数 - 最大匹配数
 #include <iostream>
 #include <cstring>

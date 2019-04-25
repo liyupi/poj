@@ -1,4 +1,5 @@
-// http://poj.org/problem?id=3980
+// https://blog.csdn.net/mdd18703649811/article/details/54912793
+// 模拟即可，想复杂了
 #include <iostream>
 
 using namespace std;

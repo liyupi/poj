@@ -1,69 +1,37 @@
-// https://www.cnblogs.com/jin-nuo/p/5297963.html
 #include <iostream>
-#include <cstring>
-#include <cmath>
+#include <algorithm>
+#include <set>
+#include <queue>
+#include <vector>
+#include <map>
+#include <string>
+
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int N;
+const int MAXN = 1001;
 
-long long ctl[21];
+int a[MAXN];
 
-void init() {
-    // 卡特兰数
-    ctl[0] = 1;
-    for (int i = 1; i <= 20; ++i) {
-        ctl[i] = ctl[i - 1] * (4 * i - 2) / (i + 1);
-    }
-}
-
-void build(int k, int cnt) {
-    if (k == 1) {
-        printf("X");
-        return;
-    }
-    if (cnt <= ctl[k - 1]) {
-        // 只有右子树
-        printf("X(");
-        build(k - 1, cnt);
-        printf(")");
-    } else if (cnt > ctl[k] - ctl[k - 1]) {
-        // 只有左子树
-        printf("(");
-        build(k - 1, cnt - ctl[k] + ctl[k - 1]);
-        printf(")X");
-    } else {
-        // 判断左右子树节点数
-        int total = k - 1;
-        int rightNum;
-        // 按右子树节点依次减少的次序求节点数
-        // 从total开始，因为要先减去只有右子树的情况
-        for (int i = total; i > 0; i--) {
-            if (ctl[i] * ctl[total - i] < cnt) {
-                cnt -= ctl[i] * ctl[total - i];
-            } else {
-                rightNum = i;
-                break;
-            }
-        }
-        printf("(");
-        // 右子树权值大，左子树权值小
-        build(total - rightNum, cnt / ctl[rightNum] + (cnt % ctl[rightNum] != 0));
-        printf(")X(");
-        build(rightNum, (cnt - 1) % ctl[rightNum] + 1);
-        printf(")");
-    }
-}
+vector<double> nums;
+set<int> myset;
+map<string, int> mmap;
+queue<int> myq;
+stact<int> mystack;
 
 int main() {
-    init();
-     while (~scanf("%d", &N) && N) {
-        int i = 1;
-        while (N > ctl[i]) {
-            N -= ctl[i++];
+    int N;
+    while(~scanf("%d", &N)) {
+        int tmp;
+        for (int i = 0; i < N; ++i) {
+            scanf("%d", &tmp);
+            nums.push_back(tmp);
         }
-        build(i, N);
-        printf("\n");
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < N; ++i) {
+            printf("%d\n", nums[i]);
+        }
     }
     return 0;
 }

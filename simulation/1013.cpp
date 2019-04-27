@@ -1,4 +1,5 @@
 // http://poj.org/problem?id=1013
+// 模拟，数量小的时候枚举即可
 #include <iostream>
 #include <cstring>
 #include <string>

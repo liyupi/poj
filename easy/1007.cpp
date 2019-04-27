@@ -1,4 +1,4 @@
-// https://blog.csdn.net/d_x_d/article/details/48467255
+// http://poj.org/problem?id=1007
 #include <iostream>
 #include <algorithm>
 #include <string>

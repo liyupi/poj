@@ -1,42 +1,48 @@
-// http://poj.org/problem?id=1017
+// http://poj.org/problem?id=1031
 #include <iostream>
+#include <cmath>
 
+#define PI 3.141592657
 using namespace std;
 
+const int MAXN = 101;
 
-int a[7];
-int bu3[2][4] = {{0, 27, 18, 9},
-                 {0, 5,  3,  1}};
+double pos[MAXN][2];
+
+double getRad(double x1, double y1, double x2, double y2) {
+    double a = atan2(y1, x1);
+    double b = atan2(y2, x2);
+    if (b - a > PI) {
+        a += 2 * PI;
+    }
+    if (a - b > PI) {
+        b += 2 * PI;
+    }
+    return a - b;
+}
 
 int main() {
-    while (true) {
-        bool flag = true;
-        for (int i = 1; i <= 6; ++i) {
-            scanf("%d", &a[i]);
-            if (a[i]) {
-                flag = false;
-            }
-        }
-        if (flag) {
+    double k, h;
+    int N;
+    scanf("%lf%lf%d", &k, &h, &N);
+    for (int i = 0; i < N; ++i) {
+        scanf("%lf%lf", &pos[i][0], &pos[i][1]);
+    }
+    pos[N][0] = pos[0][0];
+    pos[N][1] = pos[0][1];
+    double minNum = 0;
+    double maxNum = 0;
+    double sum = 0;
+    for (int i = 0; i < N; ++i) {
+        double rad = getRad(pos[i][0], pos[i][1], pos[i + 1][0], pos[i + 1][1]);
+        sum += rad;
+        minNum = min(minNum, sum);
+        maxNum = max(maxNum, sum);
+        if (maxNum - minNum >= 2 * PI) {
+            maxNum = minNum + 2 * PI;
             break;
         }
-        int sum = a[6] + a[5] + a[4] + (a[3] + 3) / 4;
-        int left1 = 0;
-        int left2 = 0;
-        a[3] %= 4;
-        left1 += a[5] * 11 + a[4] * 20 + bu3[0][a[3]];
-        left2 += a[4] * 5 + bu3[1][a[3]];
-        while (left2 < a[2]) {
-            left2 += 9;
-            left1 += 36;
-            sum += 1;
-        }
-        left1 -= a[2] * 4;
-        while (left1 < a[1]) {
-            left1 += 36;
-            sum += 1;
-        }
-        cout << sum << endl;
     }
-    return 0;
+    printf("%.2lf\n", k * h * (maxNum - minNum));
 }
+
